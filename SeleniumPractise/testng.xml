@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="1" name="Suite">
+	<!-- <test thread-count="1" name="RoundtripFlightSearchTest">
+		<parameter name="excelFilePath" value="src/CleartripTestData.xlsx" />
+		<parameter name="MailId" value="kaushik.0407@gmail.com" />
+		<parameter name="Password" value="K@ush1k92" />
+		<parameter name="excelSheetName" value="RoundTrip" />
+		<parameter name="excelSheetName2" value="HotelSearch" />
+		<classes>
+			<class name="com.selenium.test.RoundTripFlightSearchTest" />
+		</classes>
+</test> -->
+		<test thread-count="1" name="HotelSearchTest">
+			<parameter name="excelFilePath" value="src/CleartripTestData.xlsx" />
+			<parameter name="MailId" value="kaushik.0407@gmail.com" />
+			<parameter name="Password" value="K@ush1k92" />
+			<parameter name="excelSheetName" value="RoundTrip" />
+			<parameter name="excelSheetName2" value="HotelSearch" />
+			<classes>
+				<class name="com.selenium.test.SearchHotelTest" />
+			</classes>
+		</test> 
+</suite> <!-- Suite -->
