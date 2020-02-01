@@ -11,6 +11,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -21,11 +22,13 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.selenium.pagenavigation.RoundTripFlightSearchPage;
 import com.selenium.utility.ExcelFunctions;
 import com.selenium.utility.CommonFunctions;
+import com.selenium.utility.CVSFunctions;
 
 public class RoundTripFlightSearchTest extends RoundTripFlightSearchPage {
 
 	String excelFilePath;
 	String excelSheetName;
+	String csvFilePath;
 	ExtentReports extent;
 	WebDriver driver;
 	String exception;
@@ -42,12 +45,13 @@ public class RoundTripFlightSearchTest extends RoundTripFlightSearchPage {
 
 	}
 
-	@Parameters({ "excelFilePath", "excelSheetName" })
+	@Parameters({ "excelFilePath", "excelSheetName" , "csvFilePath"})
 	@BeforeTest
-	public void beforeTest(String excelFilePath, String excelSheetName) throws InterruptedException {
+	public void beforeTest( @Optional String excelFilePath, @Optional String excelSheetName, @Optional String csvFilePath) throws InterruptedException {
 		System.out.println("beforeTest");
 		this.excelFilePath = excelFilePath;
 		this.excelSheetName = excelSheetName;
+		this.csvFilePath = csvFilePath;
 		driver = commonFunctions.doSetUp();
 		ExtentHtmlReporter reporter = new ExtentHtmlReporter(
 				"test-output/ExtentReport_Output/RoundTripFlightSearchTestReport.html");
@@ -85,7 +89,14 @@ public class RoundTripFlightSearchTest extends RoundTripFlightSearchPage {
 	@DataProvider
 	public Iterator<Object[]> getTestdata() {
 		System.out.println("DataProvider");
-		ArrayList<Object[]> dataList = ExcelFunctions.readExcel(excelFilePath, excelSheetName);
+		ArrayList<Object[]> dataList = null;
+		if(this.csvFilePath == null){
+			 dataList = ExcelFunctions.readExcel(excelFilePath, excelSheetName);
+		}
+		else if (this.csvFilePath != null){
+		 dataList = CVSFunctions.ReadCSV(csvFilePath);
+		}
+		
 		return dataList.iterator();
 	}
 

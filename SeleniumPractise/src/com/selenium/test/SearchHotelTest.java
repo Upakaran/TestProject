@@ -11,6 +11,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -21,6 +22,7 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.selenium.pagenavigation.HotelSearchPage;
 import com.selenium.utility.CommonFunctions;
 import com.selenium.utility.ExcelFunctions;
+import com.selenium.utility.CVSFunctions;
 
 public class SearchHotelTest extends HotelSearchPage {
 
@@ -28,6 +30,7 @@ public class SearchHotelTest extends HotelSearchPage {
 	ExtentReports extent;
 	String excelFilePath;
 	String excelSheetName2;
+	String csvFilePath;
 	ExtentTest logger;
 	CommonFunctions commonFunctions = new CommonFunctions();
 
@@ -44,12 +47,13 @@ public class SearchHotelTest extends HotelSearchPage {
 
 	}
 
-	@Parameters({ "excelFilePath", "excelSheetName2" })
+	@Parameters({ "excelFilePath", "excelSheetName2" , "csvFilePath"})
 	@BeforeTest
-	public void beforeTest(String excelFilePath, String excelSheetName2) throws InterruptedException {
+	public void beforeTest(@Optional String excelFilePath, @Optional String excelSheetName2, @Optional String csvFilePath) throws InterruptedException {
 		System.out.println("beforeTest2");
 		this.excelFilePath = excelFilePath;
 		this.excelSheetName2 = excelSheetName2;
+		this.csvFilePath = csvFilePath;
 		driver = commonFunctions.doSetUp();
 		ExtentHtmlReporter reporter = new ExtentHtmlReporter(
 				"test-output/ExtentReport_Output/SearchHotelTestReport.html");
@@ -87,7 +91,13 @@ public class SearchHotelTest extends HotelSearchPage {
 	@DataProvider
 	public Iterator<Object[]> getTestdata() {
 		System.out.println("DataProvider2");
-		ArrayList<Object[]> dataList = ExcelFunctions.readExcel(excelFilePath, excelSheetName2);
+		ArrayList<Object[]> dataList = null;
+		if(this.csvFilePath == null){
+			 dataList = ExcelFunctions.readExcel(excelFilePath, excelSheetName2);
+		}
+		else if (this.csvFilePath != null){
+		 dataList = CVSFunctions.ReadCSV(csvFilePath);
+		}
 		return dataList.iterator();
 	}
 
