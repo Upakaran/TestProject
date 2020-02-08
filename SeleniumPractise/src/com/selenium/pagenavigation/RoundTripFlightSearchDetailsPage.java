@@ -47,7 +47,7 @@ public class RoundTripFlightSearchDetailsPage {
 		headerArray[0] = driver.findElement(headingVendor).getText().toString();
 		headerArray[2] = "Arrive";
 		headerArray[1] = driver.findElement(headingDepart).getText().toString();
-		headerArray[2] = driver.findElement(headingArrive).getText().toString();
+	//	headerArray[2] = driver.findElement(headingArrive).getText().toString();
 		headerArray[3] = driver.findElement(headingDuration).getText().toString();
 		headerArray[4] = driver.findElement(headingPrice).getText().toString();
 
