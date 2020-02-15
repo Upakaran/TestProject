@@ -1,6 +1,8 @@
 package com.selenium.test;
 
 import org.testng.ITestResult;
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,6 +20,7 @@ import org.testng.annotations.Test;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.Markup;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.selenium.pagenavigation.RoundTripFlightSearchPage;
 import com.selenium.utility.ExcelFunctions;
@@ -75,14 +78,27 @@ public class RoundTripFlightSearchTest extends RoundTripFlightSearchPage {
 	}
 
 	@AfterMethod
-	public void afterTest(ITestResult result) throws InterruptedException {
+	public void afterTest(ITestResult result) throws Exception {
 		System.out.println("AfterMethod");
-		if (result.getStatus() == ITestResult.SUCCESS)
-			logger.log(Status.PASS, "flight Search passed");
-		else if (result.getStatus() == ITestResult.FAILURE)
-			logger.log(Status.FAIL, "flight Search failed");
+		if (result.getStatus() == ITestResult.SUCCESS){
+			logger.log(Status.PASS, MarkupHelper.createLabel(result.getName()+" Test Case PASSED", ExtentColor.GREEN));
+		//	logger.log(Status.PASS, "flight Search passed");
+		}
+			
+		else if (result.getStatus() == ITestResult.FAILURE){
+		//	logger.log(Status.FAIL, "flight Search failed");
+			logger.log(Status.FAIL, "Test Case Failed is "+result.getName());
+		//	 logger.log(Status.FAIL, "Test Case Failed is "+result.getThrowable());
+			String screenshotPath = commonFunctions.getScreenshot(driver, result.getName());
+			System.out.println("screenshotPath "+screenshotPath);
+		//	logger.log(Status.FAIL, (Markup) logger.addScreenCaptureFromPath(screenshotPath));
+			logger.log(Status.FAIL, MarkupHelper.createLabel(result.getName()+" Test case FAILED due to below issues:", ExtentColor.RED));
+			logger.fail(result.getThrowable());
+			logger.fail("Snapshot below: " + logger.addScreenCaptureFromPath(screenshotPath));
+		}	
 		else if (result.getStatus() == ITestResult.SKIP)
-			logger.log(Status.SKIP, "flight Search skipped");
+		//	logger.log(Status.SKIP, "flight Search skipped");
+		logger.log(Status.SKIP, MarkupHelper.createLabel(result.getName()+" Test Case SKIPPED", ExtentColor.GREY));
 		commonFunctions.Logout();
 	}
 

@@ -1,16 +1,24 @@
 package com.selenium.utility;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.apache.commons.io.FileUtils;
 
 public class CommonFunctions {
 	
@@ -32,9 +40,13 @@ public class CommonFunctions {
 	By ClearTripLogo = By.xpath("(//span[@title='Cleartrip '])");
 	
 	public  WebDriver doSetUp() {
-
+		
 		System.setProperty("webdriver.chrome.driver",
-				"C:\\Users\\Kaushik\\Downloads\\chromedriver_win32\\chromedriver.exe");
+				"Drivers/chromedriver.exe");
+
+
+//		System.setProperty("webdriver.chrome.driver",
+//				"C:\\Users\\Kaushik\\Downloads\\chromedriver_win32\\chromedriver.exe");
 
 		// Create object of HashMap Class
 		Map<String, Object> prefs = new HashMap<String, Object>();
@@ -118,5 +130,26 @@ public class CommonFunctions {
 		WebDriverWait wait = new WebDriverWait(driver, 60);
 		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
 		return element;
+	}
+	
+	//Creating a method getScreenshot and passing two parameters 
+	//driver and screenshotName
+	public  String getScreenshot(WebDriver driver, String screenshotName) throws Exception {
+	                //below line is just to append the date format with the screenshot name to avoid duplicate names		
+	                String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+			TakesScreenshot ts = (TakesScreenshot) driver;
+			File source = ts.getScreenshotAs(OutputType.FILE);
+	                
+			System.out.println(source.getAbsolutePath());
+			
+			
+			String destination = "test-output/FailedTestsScreenshots/"+screenshotName+dateName+".png";
+			System.out.println("destination "+destination);
+			File finalDestination = new File(destination);
+			FileUtils.copyFile(source, finalDestination);
+	                //Returns the captured file path
+			String readScreenshotPath = "../FailedTestsScreenshots/"+screenshotName+dateName+".png";
+			return readScreenshotPath;
+			
 	}
 }
