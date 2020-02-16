@@ -63,11 +63,11 @@ public class RoundTripFlightSearchTest extends RoundTripFlightSearchPage {
 		System.out.println(setDriverRoundTripFlightSearch(driver));
 	}
 
-	@Parameters({ "MailId", "Password" })
+	@Parameters({ "MailId", "Password" , "targetURL" })
 	@BeforeMethod()
-	public void beforeMethod(String myMailId, String myPassword) throws InterruptedException {
+	public void beforeMethod(String myMailId, String myPassword, String targetURL) throws InterruptedException {
 		System.out.println("beforeMethod");
-		commonFunctions.Login(myMailId, myPassword);
+		commonFunctions.Login(myMailId, myPassword ,targetURL);
 	}
 
 	@AfterTest

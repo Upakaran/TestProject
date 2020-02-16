@@ -23,7 +23,7 @@ import org.apache.commons.io.FileUtils;
 public class CommonFunctions {
 	
 	WebDriver driver;
-	String targetURL = "https://www.cleartrip.com/";
+//	String targetURL = "https://www.cleartrip.com/";
 	
 	/* used in login method*/
 	
@@ -80,7 +80,7 @@ public class CommonFunctions {
 
 	}
 
-	public void Login(String myMailId, String myPassword) throws InterruptedException {
+	public void Login(String myMailId, String myPassword , String targetURL) throws InterruptedException {
 
 		// launch browser
 

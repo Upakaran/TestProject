@@ -64,11 +64,11 @@ public class SearchHotelTest extends HotelSearchPage {
 		System.out.println(setDriverHotelSearch(driver));
 	}
 
-	@Parameters({ "MailId", "Password" })
+	@Parameters({ "MailId", "Password" , "targetURL" })
 	@BeforeMethod()
-	public void beforeMethod(String myMailId, String myPassword) throws InterruptedException {
+	public void beforeMethod(String myMailId, String myPassword , String targetURL) throws InterruptedException {
 		System.out.println("beforeMethod2");
-		commonFunctions.Login(myMailId, myPassword);
+		commonFunctions.Login(myMailId, myPassword , targetURL);
 	}
 
 	@AfterTest
