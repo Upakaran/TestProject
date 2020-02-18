@@ -44,17 +44,17 @@ public class ExcelFunctions {
 
 			for (int i = 1; i <= lastRow; i++) {
 				row = sheet.getRow(i);
-				if(row.getCell(row.getLastCellNum()-1).getStringCellValue().equals("No"))
+				if(row.getCell(row.getLastCellNum()-1).getStringCellValue().equalsIgnoreCase("No"))
 					continue;
 				
 				else{
-					Object[] localArr = new Object[row.getLastCellNum()-2];
+					Object[] localArr = new Object[row.getLastCellNum()-1];
 					System.out.println("last cell num "+row.getLastCellNum());
 					System.err.println("physical no of cells"+ row.getPhysicalNumberOfCells());
-					for (int j = 1; j < row.getLastCellNum()-1; j++) {
+					for (int j = 0; j < row.getLastCellNum()-1; j++) {
 						cell = row.getCell(j);
 						String value = cell.getStringCellValue();
-						localArr[j-1] = value;
+						localArr[j] = value;
 					}
 					dataList.add(localArr);
 				}
