@@ -1,14 +1,13 @@
 package com.selenium.utility;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -18,12 +17,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.apache.commons.io.FileUtils;
 
 public class CommonFunctions {
 	
 	WebDriver driver;
-//	String targetURL = "https://www.cleartrip.com/";
+	//String targetURL = "https://www.cleartrip.com/";
 	
 	/* used in login method*/
 	
@@ -39,12 +37,15 @@ public class CommonFunctions {
 	By SignoutBtn = By.xpath("//a[text()='Sign out']");
 	By ClearTripLogo = By.xpath("(//span[@title='Cleartrip '])");
 	
+	By SignOutHeader2 = By.xpath("(//div[@class='fs-2 c-inherit flex flex-nowrap']//*[name()='svg'])[2]");
+	By SignoutBtn2 = By.xpath("//span[contains(text(),'Sign out')]");
+	By ClearTripLogo2 = By.xpath("//a[@data-test-attrib='cleartrip-logo']//*[name()='svg']");
+	
 	public  WebDriver doSetUp() {
-		
+
 		System.setProperty("webdriver.chrome.driver",
 				"Drivers/chromedriver.exe");
-
-
+		
 //		System.setProperty("webdriver.chrome.driver",
 //				"C:\\Users\\Kaushik\\Downloads\\chromedriver_win32\\chromedriver.exe");
 
@@ -80,7 +81,7 @@ public class CommonFunctions {
 
 	}
 
-	public void Login(String myMailId, String myPassword , String targetURL) throws InterruptedException {
+	public void Login(String myMailId, String myPassword, String targetURL) throws InterruptedException {
 
 		// launch browser
 
@@ -108,15 +109,34 @@ public class CommonFunctions {
 	public void Logout() throws InterruptedException {
 
 		System.out.println("In logout");
-		driver.findElement(SignOutHeader).click();
-		Thread.sleep(5000);
-		driver.findElement(SignoutBtn).click();
-		Thread.sleep(5000);
-		System.out.println("logout done");
-		driver.findElement(ClearTripLogo).click();
-		Thread.sleep(5000);
-		driver.manage().deleteAllCookies();
-		Thread.sleep(2000);
+		WebElement signoutHeader1 = null;
+		try {
+			signoutHeader1 = driver.findElement(SignOutHeader);
+			signoutHeader1.click();
+			Thread.sleep(5000);
+			driver.findElement(SignoutBtn).click();
+			Thread.sleep(5000);
+			System.out.println("logout done");
+			driver.findElement(ClearTripLogo).click();
+			Thread.sleep(5000);
+			driver.manage().deleteAllCookies();
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			System.out.println("This will take the second route for signout.");
+		}
+		
+		if(signoutHeader1 == null){
+			driver.findElement(SignOutHeader2).click();
+			Thread.sleep(5000);
+			driver.findElement(SignoutBtn2).click();
+			Thread.sleep(5000);
+			System.out.println("logout done");
+			driver.findElement(ClearTripLogo2).click();
+			Thread.sleep(5000);
+			driver.manage().deleteAllCookies();
+			Thread.sleep(2000);
+		}
+		
 
 	}
 	
@@ -133,23 +153,23 @@ public class CommonFunctions {
 	}
 	
 	//Creating a method getScreenshot and passing two parameters 
-	//driver and screenshotName
-	public  String getScreenshot(WebDriver driver, String screenshotName) throws Exception {
-	                //below line is just to append the date format with the screenshot name to avoid duplicate names		
-	                String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
-			TakesScreenshot ts = (TakesScreenshot) driver;
-			File source = ts.getScreenshotAs(OutputType.FILE);
-	                
-			System.out.println(source.getAbsolutePath());
-			
-			
-			String destination = "test-output/FailedTestsScreenshots/"+screenshotName+dateName+".png";
-			System.out.println("destination "+destination);
-			File finalDestination = new File(destination);
-			FileUtils.copyFile(source, finalDestination);
-	                //Returns the captured file path
-			String readScreenshotPath = "../FailedTestsScreenshots/"+screenshotName+dateName+".png";
-			return readScreenshotPath;
-			
-	}
+		//driver and screenshotName
+		public  String getScreenshot(WebDriver driver, String screenshotName) throws Exception {
+		                //below line is just to append the date format with the screenshot name to avoid duplicate names		
+		                String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+				TakesScreenshot ts = (TakesScreenshot) driver;
+				File source = ts.getScreenshotAs(OutputType.FILE);
+		                
+				System.out.println(source.getAbsolutePath());
+				
+				
+				String destination = "Report_Output/FailedTestsScreenshots/"+screenshotName+dateName+".png";
+				System.out.println("destination "+destination);
+				File finalDestination = new File(destination);
+				FileUtils.copyFile(source, finalDestination);
+		                //Returns the captured file path
+				String readScreenshotPath = "../FailedTestsScreenshots/"+screenshotName+dateName+".png";
+				return readScreenshotPath;
+				
+		}
 }

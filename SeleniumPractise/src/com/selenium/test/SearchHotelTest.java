@@ -22,9 +22,9 @@ import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.selenium.pagenavigation.HotelSearchPage;
+import com.selenium.utility.CVSFunctions;
 import com.selenium.utility.CommonFunctions;
 import com.selenium.utility.ExcelFunctions;
-import com.selenium.utility.CVSFunctions;
 
 public class SearchHotelTest extends HotelSearchPage {
 
@@ -49,7 +49,7 @@ public class SearchHotelTest extends HotelSearchPage {
 
 	}
 
-	@Parameters({ "excelFilePath", "excelSheetName2" , "csvFilePath"})
+	@Parameters({ "excelFilePath", "excelSheetName2" , "csvFilePath" })
 	@BeforeTest
 	public void beforeTest(@Optional String excelFilePath, @Optional String excelSheetName2, @Optional String csvFilePath) throws InterruptedException {
 		System.out.println("beforeTest2");
@@ -58,7 +58,7 @@ public class SearchHotelTest extends HotelSearchPage {
 		this.csvFilePath = csvFilePath;
 		driver = commonFunctions.doSetUp();
 		ExtentHtmlReporter reporter = new ExtentHtmlReporter(
-				"test-output/ExtentReport_Output/SearchHotelTestReport.html");
+				"Report_Output/ExtentReport_Output/SearchHotelTestReport.html");
 		extent = new ExtentReports();
 		extent.attachReporter(reporter);
 		System.out.println(setDriverHotelSearch(driver));
@@ -66,7 +66,7 @@ public class SearchHotelTest extends HotelSearchPage {
 
 	@Parameters({ "MailId", "Password" , "targetURL" })
 	@BeforeMethod()
-	public void beforeMethod(String myMailId, String myPassword , String targetURL) throws InterruptedException {
+	public void beforeMethod(String myMailId, String myPassword, String targetURL) throws InterruptedException {
 		System.out.println("beforeMethod2");
 		commonFunctions.Login(myMailId, myPassword , targetURL);
 	}
@@ -102,6 +102,7 @@ public class SearchHotelTest extends HotelSearchPage {
 		logger.log(Status.SKIP, MarkupHelper.createLabel(result.getName()+" Test Case SKIPPED", ExtentColor.GREY));
 		commonFunctions.Logout();
 	}
+
 	@DataProvider
 	public Iterator<Object[]> getTestdata() {
 		System.out.println("DataProvider2");

@@ -1,8 +1,6 @@
 package com.selenium.test;
 
 import org.testng.ITestResult;
-import com.aventstack.extentreports.markuputils.ExtentColor;
-import com.aventstack.extentreports.markuputils.MarkupHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,22 +18,23 @@ import org.testng.annotations.Test;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.markuputils.Markup;
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.selenium.pagenavigation.RoundTripFlightSearchPage;
 import com.selenium.utility.ExcelFunctions;
-import com.selenium.utility.CommonFunctions;
 import com.selenium.utility.CVSFunctions;
+import com.selenium.utility.CommonFunctions;
 
 public class RoundTripFlightSearchTest extends RoundTripFlightSearchPage {
 
 	String excelFilePath;
 	String excelSheetName;
-	String csvFilePath;
 	ExtentReports extent;
 	WebDriver driver;
 	String exception;
 	ExtentTest logger;
+	String csvFilePath;
 
 	CommonFunctions commonFunctions = new CommonFunctions();
 
@@ -50,24 +49,24 @@ public class RoundTripFlightSearchTest extends RoundTripFlightSearchPage {
 
 	@Parameters({ "excelFilePath", "excelSheetName" , "csvFilePath"})
 	@BeforeTest
-	public void beforeTest( @Optional String excelFilePath, @Optional String excelSheetName, @Optional String csvFilePath) throws InterruptedException {
+	public void beforeTest(@Optional String excelFilePath, @Optional String excelSheetName, @Optional String csvFilePath) throws InterruptedException {
 		System.out.println("beforeTest");
 		this.excelFilePath = excelFilePath;
 		this.excelSheetName = excelSheetName;
 		this.csvFilePath = csvFilePath;
 		driver = commonFunctions.doSetUp();
 		ExtentHtmlReporter reporter = new ExtentHtmlReporter(
-				"test-output/ExtentReport_Output/RoundTripFlightSearchTestReport.html");
+				"Report_Output/ExtentReport_Output/RoundTripFlightSearchTestReport.html");
 		extent = new ExtentReports();
 		extent.attachReporter(reporter);
 		System.out.println(setDriverRoundTripFlightSearch(driver));
 	}
 
-	@Parameters({ "MailId", "Password" , "targetURL" })
+	@Parameters({ "MailId", "Password", "targetURL" })
 	@BeforeMethod()
-	public void beforeMethod(String myMailId, String myPassword, String targetURL) throws InterruptedException {
+	public void beforeMethod(String myMailId, String myPassword , String targetURL) throws InterruptedException {
 		System.out.println("beforeMethod");
-		commonFunctions.Login(myMailId, myPassword ,targetURL);
+		commonFunctions.Login(myMailId, myPassword , targetURL);
 	}
 
 	@AfterTest
@@ -112,7 +111,6 @@ public class RoundTripFlightSearchTest extends RoundTripFlightSearchPage {
 		else if (this.csvFilePath != null){
 		 dataList = CVSFunctions.ReadCSV(csvFilePath);
 		}
-		
 		return dataList.iterator();
 	}
 

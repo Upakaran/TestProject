@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -33,7 +34,8 @@ public class RoundTripFlightSearchPage {
 	By selectInfants = By.id("Infants");
 	By SearchBtn = By.id("SearchBtn");
 	By nonStopFlighBtn = By.xpath("(//a[text()='Non-stop '])[2]");
-	
+	By nonStopCheckBox = By.xpath("((//div[@class='pt-3'])[1]//descendant::div[@class='flex flex-start p-relative flex-middle'])[1]//span");
+	By modifySearchLink = By.xpath("(//a[@id='modifySearchLink'])[2]");
 	
 	public String setDriverRoundTripFlightSearch(WebDriver driver) {
 		this.driver = driver;
@@ -169,15 +171,39 @@ public class RoundTripFlightSearchPage {
 			Thread.sleep(2000);
 
 			driver.findElement(SearchBtn).click();
-			WebElement element = CommonFunctions.myExplicitWait("(//a[text()='All flights'])[2]" , driver);
-			Thread.sleep(3000);
-			element.click();
-			Thread.sleep(3000);
-			driver.findElement(nonStopFlighBtn).click();
-			Thread.sleep(5000);
+			Thread.sleep(1000);
 			
-			RoundTripFlightSearchDetailsPage.iterateNonStopFlights(driver);
+			WebElement element = null;
+			try{
+				 element = driver.findElement(modifySearchLink);
+			}
 			
+			catch(NoSuchElementException e){
+				e.getMessage();
+			}
+			
+						
+			if (element!=null){
+					System.out.println("inside 1st condition for round trip flights search");
+					WebElement element1 = CommonFunctions.myExplicitWait("(//a[text()='All flights'])[2]" , driver);
+					Thread.sleep(3000);
+					element1.click();
+					Thread.sleep(3000);
+					driver.findElement(nonStopFlighBtn).click();
+					Thread.sleep(5000);
+					RoundTripFlightSearchDetailsPage.iterateNonStopFlights(driver);
+			}
+			
+			else {
+					System.out.println("inside 2nd condition for round trip flights search");
+					WebElement element2 = CommonFunctions.myExplicitWait("//label[@class='radio w-100p radio__light']//p[text()='All airlines']" , driver);
+					Thread.sleep(3000);
+					element2.click();
+					Thread.sleep(3000);
+					driver.findElement(nonStopCheckBox).click();
+					Thread.sleep(5000);
+					RoundTripFlightSearchDetailsPage.iterateNonStopFlights2(driver);
+			}
 	}
-
+	
 }
