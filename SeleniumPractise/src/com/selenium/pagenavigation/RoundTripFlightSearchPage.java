@@ -196,10 +196,17 @@ public class RoundTripFlightSearchPage {
 			
 			else {
 					System.out.println("inside 2nd condition for round trip flights search");
-					WebElement element2 = CommonFunctions.myExplicitWait("//label[@class='radio w-100p radio__light']//p[text()='All airlines']" , driver);
-					Thread.sleep(3000);
-					element2.click();
-					Thread.sleep(3000);
+					try {
+						WebElement element2 = CommonFunctions.myExplicitWait("//label[@class='radio w-100p radio__light']//p[text()='All airlines']" , driver);
+						Thread.sleep(3000);
+						element2.click();
+						Thread.sleep(3000);
+						
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+						System.out.println("All flights button not available");
+					}
+					
 					driver.findElement(nonStopCheckBox).click();
 					Thread.sleep(5000);
 					RoundTripFlightSearchDetailsPage.iterateNonStopFlights2(driver);
